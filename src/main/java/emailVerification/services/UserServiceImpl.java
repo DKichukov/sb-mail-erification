@@ -3,6 +3,8 @@ package emailVerification.services;
 import emailVerification.exceptions.UserAlreadyExistsException;
 import emailVerification.models.User;
 import emailVerification.registration.RegistrationRequest;
+import emailVerification.registration.token.VerificationToken;
+import emailVerification.registration.token.VerificationTokenRepository;
 import emailVerification.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,8 +17,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final VerificationTokenRepository tokenRepository;
 
 
     @Override
@@ -43,5 +46,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> finfByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void saveUserVerificationToken(User theUser, String token) {
+        var verificationToken = new VerificationToken(token, theUser);
+        tokenRepository.save(verificationToken);
     }
 }

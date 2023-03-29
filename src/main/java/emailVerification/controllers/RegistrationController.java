@@ -21,11 +21,11 @@ public class RegistrationController {
     @PostMapping
     public String registerUser(RegistrationRequest registrationRequest, final HttpServletRequest request) {
         User user = userService.registerUser(registrationRequest);
-        //publish(with publisher) registration event
+
         publisher.publishEvent(new RegistrationCompleteEvent(user,applicationUrl(request)));
         return " Success! Please check your email to complete your registration";
-
     }
+
 
     public String applicationUrl(HttpServletRequest request) {
         return "http://"+request.getServerName() + " :" + request.getServerPort() + request.getContextPath();
