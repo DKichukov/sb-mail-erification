@@ -12,4 +12,6 @@ public interface UserService {
     Optional<User> finfByEmail(String email);
 
     void saveUserVerificationToken(User theUser, String verificationToken);
+
+    String validateToken(String theToken);
 }
